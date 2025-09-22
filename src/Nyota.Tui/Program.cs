@@ -26,7 +26,7 @@ class Program
 
         var policyRepo = new FilePolicyRepository(policyPath, fileSystem);
         var universeRepo = new FileUniverseRepository(Path.Combine(dataRoot, "universe"));
-        var portfolioRepo = new FilePortfolioRepository(Path.Combine(dataRoot, "portfolios"));
+        var portfolioRepo = new FilePortfolioRepository(Path.Combine(dataRoot, "portfolios"), fileSystem);
         var journal = new FileJournal(journalPath, fileSystem);
 
         Policy? policy = null;
