@@ -1,4 +1,4 @@
-using Nyota.Core;
+using Nyota.Domain;
 
 namespace Nyota.Abstractions
 {

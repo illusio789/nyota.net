@@ -6,4 +6,11 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nyota.Abstractions\Nyota.Abstractions.csproj" />
+    <ProjectReference Include="..\Nyota.Domain\Nyota.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Linq.Async" Version="6.0.3" />
+  </ItemGroup>
 </Project>

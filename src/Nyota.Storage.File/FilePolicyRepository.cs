@@ -1,7 +1,7 @@
 // File adapters (policy, universe, portfolio, ledger, journal, reports, run-config)
 
 using Nyota.Abstractions;
-using Nyota.Core;
+using Nyota.Domain;
 
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;

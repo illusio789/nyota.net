@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionF
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nyota.Domain", "src\Nyota.Domain\Nyota.Domain.csproj", "{9CCE4024-6F91-4FA1-AD04-1C8FFA07E82E}"
+EndProject
 Global
 				GlobalSection(SolutionConfigurationPlatforms) = preSolution
 								Debug|Any CPU = Debug|Any CPU
@@ -45,5 +47,9 @@ Global
 								{55555555-5555-5555-5555-555555555555}.Debug|Any CPU.Build.0 = Debug|Any CPU
 								{55555555-5555-5555-5555-555555555555}.Release|Any CPU.ActiveCfg = Release|Any CPU
 								{55555555-5555-5555-5555-555555555555}.Release|Any CPU.Build.0 = Release|Any CPU
+					{9CCE4024-6F91-4FA1-AD04-1C8FFA07E82E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+					{9CCE4024-6F91-4FA1-AD04-1C8FFA07E82E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+					{9CCE4024-6F91-4FA1-AD04-1C8FFA07E82E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+					{9CCE4024-6F91-4FA1-AD04-1C8FFA07E82E}.Release|Any CPU.Build.0 = Release|Any CPU
 				EndGlobalSection
 EndGlobal

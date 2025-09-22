@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Nyota.Core;
+using Nyota.Domain;
 
 using Xunit;
 
