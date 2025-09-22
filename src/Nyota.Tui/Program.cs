@@ -17,16 +17,16 @@ class Program
 
         Console.OutputEncoding = Encoding.UTF8;
         var dataRoot = args.Length >= 2 && args[0] == "--data" ? args[1] : "./data";
-        Directory.CreateDirectory(dataRoot);
-        Directory.CreateDirectory(Path.Combine(dataRoot, "universe"));
-        Directory.CreateDirectory(Path.Combine(dataRoot, "portfolios"));
-        Directory.CreateDirectory(Path.Combine(dataRoot, "reports"));
-        var policyPath = Path.Combine(dataRoot, "policy.yaml");
-        var journalPath = Path.Combine(dataRoot, "journal.ndjson");
+        fileSystem.Directory.CreateDirectory(dataRoot);
+        fileSystem.Directory.CreateDirectory(Path.Combine(dataRoot, "universe"));
+        fileSystem.Directory.CreateDirectory(Path.Combine(dataRoot, "portfolios"));
+        fileSystem.Directory.CreateDirectory(Path.Combine(dataRoot, "reports"));
+        var policyPath = fileSystem.Path.Combine(dataRoot, "policy.yaml");
+        var journalPath = fileSystem.Path.Combine(dataRoot, "journal.ndjson");
 
         var policyRepo = new FilePolicyRepository(policyPath, fileSystem);
-        var universeRepo = new FileUniverseRepository(Path.Combine(dataRoot, "universe"));
-        var portfolioRepo = new FilePortfolioRepository(Path.Combine(dataRoot, "portfolios"), fileSystem);
+        var universeRepo = new FileUniverseRepository(fileSystem.Path.Combine(dataRoot, "universe"), fileSystem);
+        var portfolioRepo = new FilePortfolioRepository(fileSystem.Path.Combine(dataRoot, "portfolios"), fileSystem);
         var journal = new FileJournal(journalPath, fileSystem);
 
         Policy? policy = null;
