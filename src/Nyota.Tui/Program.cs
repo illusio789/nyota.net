@@ -1,3 +1,4 @@
+using System.IO.Abstractions;
 using System.Text;
 
 using Nyota.Domain;
@@ -12,6 +13,8 @@ class Program
 {
     static async Task<int> Main(string[] args)
     {
+        var fileSystem = new FileSystem();
+
         Console.OutputEncoding = Encoding.UTF8;
         var dataRoot = args.Length >= 2 && args[0] == "--data" ? args[1] : "./data";
         Directory.CreateDirectory(dataRoot);
@@ -24,7 +27,7 @@ class Program
         var policyRepo = new FilePolicyRepository(policyPath);
         var universeRepo = new FileUniverseRepository(Path.Combine(dataRoot, "universe"));
         var portfolioRepo = new FilePortfolioRepository(Path.Combine(dataRoot, "portfolios"));
-        var journal = new FileJournal(journalPath);
+        var journal = new FileJournal(journalPath, fileSystem);
 
         Policy? policy = null;
         try { policy = await policyRepo.GetAsync(CancellationToken.None); } catch { }
