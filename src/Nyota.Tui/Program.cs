@@ -24,7 +24,7 @@ class Program
         var policyPath = Path.Combine(dataRoot, "policy.yaml");
         var journalPath = Path.Combine(dataRoot, "journal.ndjson");
 
-        var policyRepo = new FilePolicyRepository(policyPath);
+        var policyRepo = new FilePolicyRepository(policyPath, fileSystem);
         var universeRepo = new FileUniverseRepository(Path.Combine(dataRoot, "universe"));
         var portfolioRepo = new FilePortfolioRepository(Path.Combine(dataRoot, "portfolios"));
         var journal = new FileJournal(journalPath, fileSystem);

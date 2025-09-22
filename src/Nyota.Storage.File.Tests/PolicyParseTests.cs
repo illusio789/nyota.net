@@ -1,4 +1,6 @@
 using System.IO;
+using System.IO.Abstractions.TestingHelpers;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Xunit;
@@ -10,6 +12,8 @@ public class PolicyParseTests
     [Fact]
     public async Task LoadsPolicyFromYaml()
     {
+        var fileSystem = new MockFileSystem();
+
         var path = Path.GetTempFileName();
         var yaml = """
                    policy:
@@ -32,10 +36,10 @@ public class PolicyParseTests
                      eod_batch_for_etfs: true
                    version: 1.0.0
                    """;
-        await System.IO.File.WriteAllTextAsync(path, yaml);
-        var repo = new FilePolicyRepository(path);
-        var p = await repo.GetAsync(default);
+        fileSystem.AddFile(path, yaml);
+
+        var repo = new FilePolicyRepository(path, fileSystem);
+        var p = await repo.GetAsync(CancellationToken.None);
         Assert.Equal("1.0.0", p.Version);
-        System.IO.File.Delete(path);
     }
 }

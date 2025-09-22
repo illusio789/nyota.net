@@ -1,5 +1,7 @@
 // File adapters (policy, universe, portfolio, ledger, journal, reports, run-config)
 
+using System.IO.Abstractions;
+
 using Nyota.Abstractions;
 using Nyota.Domain;
 
@@ -11,6 +13,7 @@ namespace Nyota.Storage.File
     public sealed class FilePolicyRepository : IPolicyRepository
     {
         private readonly string _path;
+        private readonly IFileSystem _fileSystem;
 
         private readonly IDeserializer _yaml = new DeserializerBuilder()
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
@@ -63,14 +66,15 @@ namespace Nyota.Storage.File
             public bool EodBatchForEtfs { get; set; }
         }
 
-        public FilePolicyRepository(string path)
+        public FilePolicyRepository(string path, IFileSystem fileSystem)
         {
             _path = path;
+            _fileSystem = fileSystem;
         }
 
         public async Task<Policy> GetAsync(CancellationToken ct)
         {
-            var yaml = await System.IO.File.ReadAllTextAsync(_path, ct);
+            var yaml = await _fileSystem.File.ReadAllTextAsync(_path, ct);
 
             PolicyInner inner;
             // Try wrapped first
@@ -146,7 +150,7 @@ namespace Nyota.Storage.File
 
             // Always save in the wrapped form for consistency
             var yaml = _yamlSerializer.Serialize(new PolicyWrapper { Policy = inner });
-            await System.IO.File.WriteAllTextAsync(_path, yaml, ct);
+            await _fileSystem.File.WriteAllTextAsync(_path, yaml, ct);
         }
     }
 }
