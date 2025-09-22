@@ -1,11 +1,9 @@
 using System.IO;
 using System.Threading.Tasks;
 
-using Nyota.Storage.File;
-
 using Xunit;
 
-namespace Nyota.Storage.File.Tests;
+namespace Nyota.Storage.File;
 
 public class PolicyParseTests
 {

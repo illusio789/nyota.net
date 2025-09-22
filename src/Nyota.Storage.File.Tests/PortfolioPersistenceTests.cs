@@ -2,11 +2,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Nyota.Core;
-using Nyota.Storage.File;
 
 using Xunit;
 
-namespace Nyota.Storage.File.Tests;
+namespace Nyota.Storage.File;
 
 public class PortfolioPersistenceTests
 {
