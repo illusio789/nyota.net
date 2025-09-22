@@ -8,9 +8,6 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace Nyota.Storage.File
 {
-// using YamlDotNet.Serialization;
-// using YamlDotNet.Serialization.NamingConventions;
-
     public sealed class FilePolicyRepository : IPolicyRepository
     {
         private readonly string _path;
@@ -20,7 +17,7 @@ namespace Nyota.Storage.File
             .IgnoreUnmatchedProperties()
             .Build();
 
-        private readonly ISerializer _yamlSer = new SerializerBuilder()
+        private readonly ISerializer _yamlSerializer = new SerializerBuilder()
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
             .Build();
 
@@ -29,41 +26,41 @@ namespace Nyota.Storage.File
         // B) { risk:..., governance:..., execution:... }
         private sealed class PolicyWrapper
         {
-            public PolicyInner? policy { get; set; }
+            public PolicyInner? Policy { get; set; }
         }
 
         private sealed class PolicyInner
         {
-            public List<string> allowed_classes { get; set; } = new();
-            public List<string> venues_whitelist { get; set; } = new();
-            public RiskDto risk { get; set; } = new();
-            public GovDto governance { get; set; } = new();
-            public ExecDto execution { get; set; } = new();
-            public string? version { get; set; }
+            public List<string> AllowedClasses { get; set; } = new();
+            public List<string> VenuesWhitelist { get; set; } = new();
+            public RiskDto Risk { get; set; } = new();
+            public GovDto Governance { get; set; } = new();
+            public ExecDto Execution { get; set; } = new();
+            public string? Version { get; set; }
         }
 
         private sealed class RiskDto
         {
-            public decimal max_position_notional_pct { get; set; }
-            public decimal max_asset_class_notional_pct { get; set; }
-            public decimal max_daily_turnover_pct { get; set; }
-            public decimal min_avg_daily_volume_usd { get; set; }
-            public int max_spread_bps { get; set; }
-            public bool leverage_allowed { get; set; }
-            public bool shorting_allowed { get; set; }
+            public decimal MaxPositionNotionalPct { get; set; }
+            public decimal MaxAssetClassNotionalPct { get; set; }
+            public decimal MaxDailyTurnoverPct { get; set; }
+            public decimal MinAvgDailyVolumeUsd { get; set; }
+            public int MaxSpreadBps { get; set; }
+            public bool LeverageAllowed { get; set; }
+            public bool ShortingAllowed { get; set; }
         }
 
         private sealed class GovDto
         {
-            public int holding_period_days { get; set; }
-            public List<string> blackout_times_utc { get; set; } = new();
-            public List<string> restricted_list { get; set; } = new();
+            public int HoldingPeriodDays { get; set; }
+            public List<string> BlackoutTimesUtc { get; set; } = new();
+            public List<string> RestrictedList { get; set; } = new();
         }
 
         private sealed class ExecDto
         {
-            public string default_time_in_force { get; set; } = "DAY";
-            public bool eod_batch_for_etfs { get; set; }
+            public string DefaultTimeInForce { get; set; } = "DAY";
+            public bool EodBatchForEtfs { get; set; }
         }
 
         public FilePolicyRepository(string path)
@@ -80,8 +77,8 @@ namespace Nyota.Storage.File
             try
             {
                 var wrapped = _yaml.Deserialize<PolicyWrapper>(yaml);
-                if (wrapped?.policy is not null)
-                    inner = wrapped.policy;
+                if (wrapped?.Policy is not null)
+                    inner = wrapped.Policy;
                 else
                     throw new YamlDotNet.Core.YamlException("Missing 'policy' root.");
             }
@@ -94,61 +91,61 @@ namespace Nyota.Storage.File
             AssetClass ParseClass(string s) => Enum.Parse<AssetClass>(s, true);
 
             var risk = new RiskLimits(
-                inner.risk.max_position_notional_pct,
-                inner.risk.max_asset_class_notional_pct,
-                inner.risk.max_daily_turnover_pct,
-                inner.risk.min_avg_daily_volume_usd,
-                inner.risk.max_spread_bps,
-                inner.risk.leverage_allowed,
-                inner.risk.shorting_allowed);
+                inner.Risk.MaxPositionNotionalPct,
+                inner.Risk.MaxAssetClassNotionalPct,
+                inner.Risk.MaxDailyTurnoverPct,
+                inner.Risk.MinAvgDailyVolumeUsd,
+                inner.Risk.MaxSpreadBps,
+                inner.Risk.LeverageAllowed,
+                inner.Risk.ShortingAllowed);
 
             var gov = new Governance(
-                inner.governance.holding_period_days,
-                inner.governance.blackout_times_utc,
-                inner.governance.restricted_list.Select(Symbol.Normalize).ToList());
+                inner.Governance.HoldingPeriodDays,
+                inner.Governance.BlackoutTimesUtc,
+                inner.Governance.RestrictedList.Select(Symbol.Normalize).ToList());
 
-            var tifOk = Enum.TryParse<TimeInForce>(inner.execution.default_time_in_force, true, out var tif);
-            var exec = new ExecutionRules(tifOk ? tif : TimeInForce.DAY, inner.execution.eod_batch_for_etfs);
+            var tifOk = Enum.TryParse<TimeInForce>(inner.Execution.DefaultTimeInForce, true, out var tif);
+            var exec = new ExecutionRules(tifOk ? tif : TimeInForce.DAY, inner.Execution.EodBatchForEtfs);
 
             return new Policy(
-                inner.allowed_classes.Select(ParseClass).ToList(),
-                inner.venues_whitelist,
+                inner.AllowedClasses.Select(ParseClass).ToList(),
+                inner.VenuesWhitelist,
                 risk, gov, exec,
-                inner.version ?? "1.0.0");
+                inner.Version ?? "1.0.0");
         }
 
         public async Task SaveAsync(Policy policy, CancellationToken ct)
         {
             var inner = new PolicyInner
             {
-                allowed_classes = policy.AllowedClasses.Select(x => x.ToString()).ToList(),
-                venues_whitelist = policy.VenuesWhitelist.ToList(),
-                risk = new RiskDto
+                AllowedClasses = policy.AllowedClasses.Select(x => x.ToString()).ToList(),
+                VenuesWhitelist = policy.VenuesWhitelist.ToList(),
+                Risk = new RiskDto
                 {
-                    max_position_notional_pct = policy.Risk.MaxPositionNotionalPct,
-                    max_asset_class_notional_pct = policy.Risk.MaxAssetClassNotionalPct,
-                    max_daily_turnover_pct = policy.Risk.MaxDailyTurnoverPct,
-                    min_avg_daily_volume_usd = policy.Risk.MinAvgDailyVolumeUsd,
-                    max_spread_bps = policy.Risk.MaxSpreadBps,
-                    leverage_allowed = policy.Risk.LeverageAllowed,
-                    shorting_allowed = policy.Risk.ShortingAllowed
+                    MaxPositionNotionalPct = policy.Risk.MaxPositionNotionalPct,
+                    MaxAssetClassNotionalPct = policy.Risk.MaxAssetClassNotionalPct,
+                    MaxDailyTurnoverPct = policy.Risk.MaxDailyTurnoverPct,
+                    MinAvgDailyVolumeUsd = policy.Risk.MinAvgDailyVolumeUsd,
+                    MaxSpreadBps = policy.Risk.MaxSpreadBps,
+                    LeverageAllowed = policy.Risk.LeverageAllowed,
+                    ShortingAllowed = policy.Risk.ShortingAllowed
                 },
-                governance = new GovDto
+                Governance = new GovDto
                 {
-                    holding_period_days = policy.Governance.HoldingPeriodDays,
-                    blackout_times_utc = policy.Governance.BlackoutTimesUtc.ToList(),
-                    restricted_list = policy.Governance.RestrictedList.Select(s => s.Value).ToList()
+                    HoldingPeriodDays = policy.Governance.HoldingPeriodDays,
+                    BlackoutTimesUtc = policy.Governance.BlackoutTimesUtc.ToList(),
+                    RestrictedList = policy.Governance.RestrictedList.Select(s => s.Value).ToList()
                 },
-                execution = new ExecDto
+                Execution = new ExecDto
                 {
-                    default_time_in_force = policy.Execution.DefaultTimeInForce.ToString(),
-                    eod_batch_for_etfs = policy.Execution.EodBatchForEtfs
+                    DefaultTimeInForce = policy.Execution.DefaultTimeInForce.ToString(),
+                    EodBatchForEtfs = policy.Execution.EodBatchForEtfs
                 },
-                version = policy.Version
+                Version = policy.Version
             };
 
             // Always save in the wrapped form for consistency
-            var yaml = _yamlSer.Serialize(new PolicyWrapper { policy = inner });
+            var yaml = _yamlSerializer.Serialize(new PolicyWrapper { Policy = inner });
             await System.IO.File.WriteAllTextAsync(_path, yaml, ct);
         }
     }
