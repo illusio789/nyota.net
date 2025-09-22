@@ -1,0 +1,2 @@
+symbol,asset_class,venue,base_ccy,quote_ccy,tick_size,lot_size,min_notional,isin,sedol,figi,leverage,source,notes
+GLD,commodity_etf,NYSE,USD,,0.01,1,0,US78463V1070,B05M4X2,BBG000BDTBL9,0,manual,SPDR Gold Shares

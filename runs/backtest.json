@@ -1,0 +1,12 @@
+
+{
+  "mode": "simulate",
+  "clock": { "type": "historical", "start": "2024-01-01", "end": "2024-12-31" },
+  "asset_classes": ["commodity_etf"],
+  "strategies": [
+    { "id": "ma_pullback_1", "type": "MovingAveragePullback", "params": { "fast": 20, "slow": 100, "atr": 14 } }
+  ],
+  "data": { "provider": "Yahoo", "resolution": "D", "cache": { "enabled": true } },
+  "execution": { "provider": "Paper", "slippage_model": "ProportionalBps", "fees_model": "Tiered" },
+  "reporting": { "output_dir": "./reports", "generate_html": true }
+}

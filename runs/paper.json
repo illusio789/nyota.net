@@ -1,0 +1,12 @@
+
+{
+  "mode": "paper",
+  "clock": { "type": "realtime" },
+  "asset_classes": ["crypto"],
+  "strategies": [
+    { "id": "crypto_trend_1", "type": "TrendFollow", "params": { "lookback": 50, "volScale": true } }
+  ],
+  "data": { "provider": "Binance", "resolution": "Min5", "cache": { "enabled": true } },
+  "execution": { "provider": "Paper", "slippage_model": "ProportionalBps", "fees_model": "Tiered" },
+  "reporting": { "output_dir": "./reports", "generate_html": true }
+}
