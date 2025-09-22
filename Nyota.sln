@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nyota.Storage.File", "src\N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nyota.Tui", "src\Nyota.Tui\Nyota.Tui.csproj", "{44444444-4444-4444-4444-444444444444}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nyota.Tests", "src\Nyota.Tests\Nyota.Tests.csproj", "{55555555-5555-5555-5555-555555555555}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nyota.Storage.File.Tests", "src\Nyota.Storage.File.Tests\Nyota.Storage.File.Tests.csproj", "{55555555-5555-5555-5555-555555555555}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{B40B8BA6-5810-4CCE-838C-DF37F18ECB2A}"
 	ProjectSection(SolutionItems) = preProject

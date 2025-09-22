@@ -1,10 +1,12 @@
-
-using Spectre.Console;
 using System.Text;
+
 using Nyota.Core;
 using Nyota.Storage.File;
 
+using Spectre.Console;
 using Spectre.Console.Rendering;
+
+namespace Nyota.Tui;
 
 class Program
 {

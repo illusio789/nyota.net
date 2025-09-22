@@ -1,8 +1,11 @@
-
 using System.IO;
 using System.Threading.Tasks;
+
 using Nyota.Storage.File;
+
 using Xunit;
+
+namespace Nyota.Storage.File.Tests;
 
 public class PolicyParseTests
 {
@@ -31,10 +34,10 @@ public class PolicyParseTests
                      eod_batch_for_etfs: true
                    version: 1.0.0
                    """;
-        await File.WriteAllTextAsync(path, yaml);
+        await System.IO.File.WriteAllTextAsync(path, yaml);
         var repo = new FilePolicyRepository(path);
         var p = await repo.GetAsync(default);
         Assert.Equal("1.0.0", p.Version);
-        File.Delete(path);
+        System.IO.File.Delete(path);
     }
 }

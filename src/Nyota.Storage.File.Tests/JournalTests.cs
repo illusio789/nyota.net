@@ -1,9 +1,12 @@
-
 using System;
 using System.Collections.Generic;
+
 using Nyota.Core;
 using Nyota.Storage.File;
+
 using Xunit;
+
+namespace Nyota.Storage.File.Tests;
 
 public class JournalTests
 {
