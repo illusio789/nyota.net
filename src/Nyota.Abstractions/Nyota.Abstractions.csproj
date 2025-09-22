@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nyota.Domain\Nyota.Domain.csproj" />

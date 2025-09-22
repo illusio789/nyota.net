@@ -1,4 +1,7 @@
-﻿namespace Nyota.Domain;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Nyota.Domain;
 
 public sealed record Attestation(
     DateTime DateUtc,

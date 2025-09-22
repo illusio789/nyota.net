@@ -1,4 +1,6 @@
-﻿namespace Nyota.Domain;
+﻿using System;
+
+namespace Nyota.Domain;
 
 public sealed record BarRequest(
     Instrument Instrument,
